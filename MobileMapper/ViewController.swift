@@ -7,12 +7,23 @@
 //
 
 import UIKit
+import MapKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var myMapView: MKMapView!
+    let ord = MKPointAnnotation()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        let latitude = 41.9742
+        let longitude = -87.9073
+        let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        
+        ord.coordinate = coordinate
+        ord.title = "O'Hare Airport"
+        myMapView.addAnnotation(ord)
+        
     }
 
     override func didReceiveMemoryWarning() {
