@@ -9,10 +9,11 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController,MKMapViewDelegate {
+class ViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var myMapView: MKMapView!
     let ord = MKPointAnnotation()
+    var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,18 +36,19 @@ class ViewController: UIViewController,MKMapViewDelegate {
                 self.myMapView.addAnnotation(annotation)
             }
         }
-        //let address2 = "Los Angeles"
-        //let geoCoder2 = CLGeocoder()
-        //geoCoder.geocodeAddressString(address2) { (arrayOfPlacemarks2, error) -> Void in
-          //  for place2 in arrayOfPlacemarks2!
-            //{
-              //  let annotation2 = MKPointAnnotation()
-                //annotation2.coordinate = (place2.location?.coordinate)!
-                //annotation2.title = place2.name
-                //self.myMapView.addAnnotation(annotation2)
-            //}
-            
-        //}
+        
+        locationManager = CLLocationManager()
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        
+    }
+    func locationManager(manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        <#code#>
+    }
+    
+    
         func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
             let pin = MKAnnotationView(annotation: annotation, reuseIdentifier:  nil)
             pin.image = UIImage(named: "mobilemakers")
@@ -55,5 +57,12 @@ class ViewController: UIViewController,MKMapViewDelegate {
             pin.rightCalloutAccessoryView = button
             return pin
         }
-}
-}
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        let coordinateSpan = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let center = view.annotation!.coordinate
+        let region = MKCoordinateRegion(center: center, span: coordinateSpan)
+        myMapView.setRegion(region, animated: true)
+        
+    }
+    
+    }
