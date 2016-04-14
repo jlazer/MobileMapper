@@ -44,8 +44,12 @@ class ViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDeleg
         locationManager.startUpdatingLocation()
         
     }
-    func locationManager(manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        <#code#>
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last
+        let center = CLLocationCoordinate2DMake(location!.coordinate.latitude, location!.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        self.myMapView.setRegion(region, animated: true)
+        
     }
     
     
